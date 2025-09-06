@@ -35,13 +35,14 @@
   "dependencies": {
     "@bacons/xcode": "1.0.0-alpha.24",
     "@react-native/normalize-colors": "^0.79.2",
-    "glob": "^10.4.2",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "fs-extra": "^11.3.1",
+    "glob": "^10.4.2"
   },
   "devDependencies": {
+    "@expo/babel-preset-cli": "^0.3.1",
     "@types/debug": "^4.1.7",
     "@types/glob": "^8.1.0",
-    "@expo/babel-preset-cli": "^0.3.1",
     "chalk": "^4.0.0",
     "jest-environment-node": "^26"
   }
