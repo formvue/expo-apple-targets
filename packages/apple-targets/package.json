@@ -1,5 +1,5 @@
 {
-  "name": "@zoltlabs/apple-targets",
+  "name": "@bacons/apple-targets",
   "version": "3.0.3",
   "description": "Generate Apple Targets with Expo Prebuild",
   "main": "build/ExtensionStorage.js",
