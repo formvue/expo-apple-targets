@@ -1,6 +1,6 @@
 {
-  "name": "@formvue/apple-targets",
-  "version": "3.0.3",
+  "name": "@formvu/apple-targets",
+  "version": "3.0.4",
   "description": "Generate Apple Targets with Expo Prebuild",
   "main": "build/ExtensionStorage.js",
   "types": "build/ExtensionStorage.d.ts",

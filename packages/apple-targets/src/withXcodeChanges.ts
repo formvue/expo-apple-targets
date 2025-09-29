@@ -392,6 +392,8 @@ function createIMessageConfigurationList(
     currentProjectVersion,
   }: XcodeSettings
 ) {
+  const mainAppTarget = getMainAppTarget(project).getDefaultConfiguration();
+  const mainAppName = mainAppTarget.project.getMainAppTarget()?.getDisplayName() ?? name;
   const common: BuildSettings = {
     ASSETCATALOG_COMPILER_APPICON_NAME: "iMessage App Icon",
     CLANG_ANALYZER_NONNULL: "YES",
@@ -407,7 +409,7 @@ function createIMessageConfigurationList(
     GENERATE_INFOPLIST_FILE: "YES",
     CURRENT_PROJECT_VERSION: currentProjectVersion,
     INFOPLIST_FILE: cwd + "/Info.plist",
-    INFOPLIST_KEY_CFBundleDisplayName: name,
+    INFOPLIST_KEY_CFBundleDisplayName: mainAppName,
     INFOPLIST_KEY_NSHumanReadableCopyright: "",
     IPHONEOS_DEPLOYMENT_TARGET: deploymentTarget,
     LD_RUNPATH_SEARCH_PATHS: [

@@ -38,6 +38,23 @@ export const withIosIcon: ConfigPlugin<{
             isTransparent
           ),
         });
+      } else if (type === "imessage") {
+        // Ensure the Assets.xcassets/iMessage App Icon.appiconset path exists
+        const iMessageIconPath = "Assets.xcassets/iMessage App Icon.appiconset";
+        await fs.promises.mkdir(join(namedProjectRoot, iMessageIconPath), {
+          recursive: true,
+        });
+
+        // Generate iMessage-specific icons
+        await writeContentsJsonAsync(join(namedProjectRoot, iMessageIconPath), {
+          images: await generateIMessageIconsInternalAsync(
+            iconFilePath,
+            projectRoot,
+            namedProjectRoot,
+            cwd,
+            isTransparent
+          ),
+        });
       } else {
         await setIconsAsync(
           iconFilePath,
@@ -203,6 +220,75 @@ export async function generateIconsInternalAsync(
           filename,
         });
       }
+    }
+  }
+
+  return imagesJson;
+}
+
+export async function generateIMessageIconsInternalAsync(
+  icon: string,
+  projectRoot: string,
+  iosNamedProjectRoot: string,
+  cacheComponent: string,
+  isTransparent: boolean
+) {
+  // Store the image JSON data for assigning via the Contents.json
+  const imagesJson: ContentsJson["images"] = [];
+
+  // iMessage icon sizes - these are landscape (width x height)
+  const iconSizes = [
+    { size: "60x45", scales: [2, 3], idiom: "iphone" },
+    { size: "67x50", scales: [2], idiom: "ipad" },
+    { size: "74x55", scales: [2], idiom: "ipad" },
+    { size: "27x20", scales: [2, 3], idiom: "universal", platform: "ios" },
+    { size: "32x24", scales: [2, 3], idiom: "universal", platform: "ios" },
+    { size: "1024x768", scales: [1], idiom: "ios-marketing", platform: "ios" },
+  ];
+
+  for (const iconSize of iconSizes) {
+    const [width, height] = iconSize.size.split("x").map(Number);
+
+    for (const scale of iconSize.scales) {
+      const scaledWidth = width * scale;
+      const scaledHeight = height * scale;
+      const filename = `icon-${iconSize.size}@${scale}x.png`;
+
+      // Using this method will cache the images in `.expo` based on the properties used to generate them.
+      const { source } = await generateImageAsync(
+        { projectRoot, cacheType: IMAGE_CACHE_NAME + cacheComponent },
+        {
+          src: icon,
+          name: filename,
+          width: scaledWidth,
+          height: scaledHeight,
+          removeTransparency: !isTransparent,
+          resizeMode: "contain", // Maintain aspect ratio for landscape icons
+          backgroundColor: isTransparent ? "#ffffff00" : "#ffffff",
+        }
+      );
+
+      // Write image buffer to the file system.
+      const assetPath = join(
+        iosNamedProjectRoot,
+        "Assets.xcassets/iMessage App Icon.appiconset",
+        filename
+      );
+      await fs.promises.writeFile(assetPath, source);
+
+      // Add to contents.json
+      const imageEntry: any = {
+        idiom: iconSize.idiom,
+        size: iconSize.size,
+        scale: `${scale}x`,
+        filename,
+      };
+
+      if (iconSize.platform) {
+        imageEntry.platform = iconSize.platform;
+      }
+
+      imagesJson.push(imageEntry);
     }
   }
 

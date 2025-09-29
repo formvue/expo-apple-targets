@@ -140,8 +140,8 @@ export function getTargetInfoPlistForType(type: ExtensionType) {
     return plist.build({
       NSExtension: {
         NSExtensionPointIdentifier,
-        // This is hardcoded as there is no Swift code in the imessage extension.
-        NSExtensionPrincipalClass: "StickerBrowserViewController",
+        // Support custom Messages Extensions with Swift code
+        NSExtensionMainStoryboard: "MainInterface",
       },
     });
   } else if (type === "account-auth") {

@@ -1,7 +1,6 @@
 {
-  "name": "@formvue/apple-targets-repo",
+  "name": "@formvu/apple-targets-repo",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
     "start": "lerna run build --parallel -- --watch",
     "prepare": "lerna run prepare --parallel"
