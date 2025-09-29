@@ -238,9 +238,9 @@ export async function generateIMessageIconsInternalAsync(
 
   // iMessage icon sizes - these are landscape (width x height)
   const iconSizes = [
-    { size: "60x45", scales: [2, 3], idiom: "iphone" },
-    { size: "67x50", scales: [2], idiom: "ipad" },
-    { size: "74x55", scales: [2], idiom: "ipad" },
+    { size: "60x45", scales: [2, 3], idiom: "universal", platform: "ios" },
+    { size: "67x50", scales: [2], idiom: "universal", platform: "ios" },
+    { size: "74x55", scales: [2], idiom: "universal", platform: "ios" },
     { size: "27x20", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "32x24", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "ios-marketing", platform: "ios" },
