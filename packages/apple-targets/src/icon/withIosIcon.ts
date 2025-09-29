@@ -243,6 +243,7 @@ export async function generateIMessageIconsInternalAsync(
     { size: "74x55", scales: [2], idiom: "universal", platform: "ios" },
     { size: "27x20", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "32x24", scales: [2, 3], idiom: "universal", platform: "ios" },
+    { size: "1024x768", scales: [1], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "ios-marketing", platform: "ios" },
   ];
 
@@ -255,7 +256,7 @@ export async function generateIMessageIconsInternalAsync(
       const filename = `icon-${iconSize.size}@${scale}x.png`;
 
       // Apple requires the marketing icon (1024x768) to have no transparency
-      const isMarketingIcon = iconSize.idiom === "ios-marketing";
+      const isMarketingIcon = iconSize.size === "1024x768" || iconSize.idiom === "ios-marketing";
       const shouldRemoveTransparency = isMarketingIcon ? true : !isTransparent;
       const bgColor = isMarketingIcon ? "#ffffff" : (isTransparent ? "#ffffff00" : "#ffffff");
 
