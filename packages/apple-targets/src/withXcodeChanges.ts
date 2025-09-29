@@ -1311,6 +1311,11 @@ async function applyXcodeChanges(
         )
         .map((file) => path.join("assets", file));
 
+  // Add Assets.xcassets to explicit folders for iMessage extensions to ensure icons are included
+  if (props.type === "imessage" && fs.existsSync(path.join(magicCwd, "Assets.xcassets"))) {
+    explicitFolders.push("Assets.xcassets");
+  }
+
   const protectedGroup = ensureProtectedGroup(project, path.dirname(props.cwd));
 
   const sharedAssets = globSync("_shared/*", {
