@@ -254,6 +254,11 @@ export async function generateIMessageIconsInternalAsync(
       const scaledHeight = height * scale;
       const filename = `icon-${iconSize.size}@${scale}x.png`;
 
+      // Apple requires the marketing icon (1024x768) to have no transparency
+      const isMarketingIcon = iconSize.idiom === "ios-marketing";
+      const shouldRemoveTransparency = isMarketingIcon ? true : !isTransparent;
+      const bgColor = isMarketingIcon ? "#ffffff" : (isTransparent ? "#ffffff00" : "#ffffff");
+
       // Using this method will cache the images in `.expo` based on the properties used to generate them.
       const { source } = await generateImageAsync(
         { projectRoot, cacheType: IMAGE_CACHE_NAME + cacheComponent },
@@ -262,9 +267,9 @@ export async function generateIMessageIconsInternalAsync(
           name: filename,
           width: scaledWidth,
           height: scaledHeight,
-          removeTransparency: !isTransparent,
+          removeTransparency: shouldRemoveTransparency,
           resizeMode: "contain", // Maintain aspect ratio for landscape icons
-          backgroundColor: isTransparent ? "#ffffff00" : "#ffffff",
+          backgroundColor: bgColor,
         }
       );
 
