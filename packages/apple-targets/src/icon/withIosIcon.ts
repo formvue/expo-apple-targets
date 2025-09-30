@@ -264,8 +264,9 @@ export async function generateIMessageIconsInternalAsync(
     for (const scale of scalesToProcess) {
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
-      // Marketing icons don't use @1x suffix
-      const filename = iconSize.idiom === "ios-marketing" && scale === 1
+      // Marketing icons and icons with no scale don't use @1x suffix
+      const omitScaleSuffix = (iconSize.idiom === "ios-marketing" && scale === 1) || !hasScale;
+      const filename = omitScaleSuffix
         ? `icon-${iconSize.size}.png`
         : `icon-${iconSize.size}@${scale}x.png`;
 
