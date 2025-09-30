@@ -245,7 +245,7 @@ export async function generateIMessageIconsInternalAsync(
     { size: "32x24", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "ios-marketing", platform: "ios" },
-    { size: "1024x1024", scales: [1], idiom: "ios-marketing", platform: "ios" },
+    { size: "1024x1024", scales: [1], idiom: "ios-marketing" },
   ];
 
   for (const iconSize of iconSizes) {
