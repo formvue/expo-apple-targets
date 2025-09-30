@@ -1314,8 +1314,14 @@ async function applyXcodeChanges(
   // For iMessage extensions, we need to include Assets.xcassets but ensure it's treated as an asset catalog
   // The trick is to include it in explicitFileTypes as "folder.assetcatalog" rather than in explicitFolders
   const explicitFileTypes: Record<string, string> = {};
-  if (props.type === "imessage" && fs.existsSync(path.join(magicCwd, "Assets.xcassets"))) {
+  const assetsXcassetsPath = path.join(magicCwd, "Assets.xcassets");
+  console.log(`[expo-apple-targets] Checking for Assets.xcassets at: ${assetsXcassetsPath}`);
+  console.log(`[expo-apple-targets] Extension type: ${props.type}`);
+  console.log(`[expo-apple-targets] Assets.xcassets exists: ${fs.existsSync(assetsXcassetsPath)}`);
+
+  if (props.type === "imessage" && fs.existsSync(assetsXcassetsPath)) {
     explicitFileTypes["Assets.xcassets"] = "folder.assetcatalog";
+    console.log(`[expo-apple-targets] Added Assets.xcassets as folder.assetcatalog`);
   }
 
   const protectedGroup = ensureProtectedGroup(project, path.dirname(props.cwd));
