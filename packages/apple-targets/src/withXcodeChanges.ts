@@ -1311,6 +1311,12 @@ async function applyXcodeChanges(
         )
         .map((file) => path.join("assets", file));
 
+  // For iMessage extensions, we need to include Assets.xcassets but ensure it's treated as an asset catalog
+  // The trick is to include it in explicitFileTypes as "folder.assetcatalog" rather than in explicitFolders
+  const explicitFileTypes: Record<string, string> = {};
+  if (props.type === "imessage" && fs.existsSync(path.join(magicCwd, "Assets.xcassets"))) {
+    explicitFileTypes["Assets.xcassets"] = "folder.assetcatalog";
+  }
 
   const protectedGroup = ensureProtectedGroup(project, path.dirname(props.cwd));
 
@@ -1344,7 +1350,7 @@ async function applyXcodeChanges(
           ].sort(),
         }),
       ],
-      explicitFileTypes: {},
+      explicitFileTypes: explicitFileTypes,
       explicitFolders: [
         // Replaces the previous `lastKnownFileType: "folder",` system that's used in things like Safari extensions to include folders of assets.
         // ex: `"Resources/_locales", "Resources/images"`
