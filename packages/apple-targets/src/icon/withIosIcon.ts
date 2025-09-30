@@ -237,7 +237,11 @@ export async function generateIMessageIconsInternalAsync(
   const imagesJson: ContentsJson["images"] = [];
 
   // iMessage icon sizes - these are landscape (width x height)
+  // Also include standard iOS icon sizes for the Messages Extension to satisfy App Store validation
   const iconSizes = [
+    // Standard iOS app icons
+    { size: "60x60", scales: [2, 3], idiom: "iphone" },
+    // iMessage-specific landscape icons
     { size: "60x45", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "67x50", scales: [2], idiom: "universal", platform: "ios" },
     { size: "74x55", scales: [2], idiom: "universal", platform: "ios" },
@@ -259,10 +263,11 @@ export async function generateIMessageIconsInternalAsync(
         ? `icon-${iconSize.size}.png`
         : `icon-${iconSize.size}@${scale}x.png`;
 
-      // Apple requires the marketing icon (1024x768) to have no transparency
-      const isMarketingIcon = iconSize.size === "1024x768" || iconSize.idiom === "ios-marketing";
-      const shouldRemoveTransparency = isMarketingIcon ? true : !isTransparent;
-      const bgColor = isMarketingIcon ? "#ffffff" : (isTransparent ? "#ffffff00" : "#ffffff");
+      // Apple requires marketing icons and standard app icons to have no transparency
+      const isMarketingIcon = iconSize.idiom === "ios-marketing";
+      const isSquareIcon = width === height;
+      const shouldRemoveTransparency = (isMarketingIcon || isSquareIcon) ? true : !isTransparent;
+      const bgColor = (isMarketingIcon || isSquareIcon) ? "#ffffff" : (isTransparent ? "#ffffff00" : "#ffffff");
 
       // Using this method will cache the images in `.expo` based on the properties used to generate them.
       const { source } = await generateImageAsync(
@@ -273,7 +278,7 @@ export async function generateIMessageIconsInternalAsync(
           width: scaledWidth,
           height: scaledHeight,
           removeTransparency: shouldRemoveTransparency,
-          resizeMode: "contain", // Maintain aspect ratio for landscape icons
+          resizeMode: isSquareIcon ? "cover" : "contain", // Use cover for square icons, contain for landscape
           backgroundColor: bgColor,
         }
       );
