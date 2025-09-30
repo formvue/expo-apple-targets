@@ -250,14 +250,18 @@ export async function generateIMessageIconsInternalAsync(
     { size: "32x24", scales: [2, 3], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "universal", platform: "ios" },
     { size: "1024x768", scales: [1], idiom: "ios-marketing", platform: "ios" },
-    // 1024x1024 must be universal WITHOUT platform for Messages Extensions to compile correctly
-    { size: "1024x1024", scales: [1], idiom: "universal" },
+    // 1024x1024 must be universal with platform "ios" but NO scale field for Messages Extensions
+    { size: "1024x1024", scales: [], idiom: "universal", platform: "ios" },
   ];
 
   for (const iconSize of iconSizes) {
     const [width, height] = iconSize.size.split("x").map(Number);
 
-    for (const scale of iconSize.scales) {
+    // Handle empty scales array (no scale field in Contents.json)
+    const scalesToProcess = iconSize.scales.length > 0 ? iconSize.scales : [1];
+    const hasScale = iconSize.scales.length > 0;
+
+    for (const scale of scalesToProcess) {
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
       // Marketing icons don't use @1x suffix
@@ -297,9 +301,13 @@ export async function generateIMessageIconsInternalAsync(
       const imageEntry: any = {
         idiom: iconSize.idiom,
         size: iconSize.size,
-        scale: `${scale}x`,
         filename,
       };
+
+      // Only add scale if scales array was not empty
+      if (hasScale) {
+        imageEntry.scale = `${scale}x`;
+      }
 
       if (iconSize.platform) {
         imageEntry.platform = iconSize.platform;
