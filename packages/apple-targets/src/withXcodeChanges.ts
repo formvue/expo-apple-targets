@@ -194,8 +194,9 @@ function createExtensionConfigurationListFromTemplate(
   };
 
   if (icon) {
-    // Add `ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;` build settings
-    dynamic.ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon";
+    // Add `ASSETCATALOG_COMPILER_APPICON_NAME` build settings
+    // iMessage extensions require "iMessage App Icon" asset set name
+    dynamic.ASSETCATALOG_COMPILER_APPICON_NAME = extensionType === "imessage" ? "iMessage App Icon" : "AppIcon";
   }
 
   const debugBuildConfig = XCBuildConfiguration.create(project, {
@@ -395,7 +396,7 @@ function createIMessageConfigurationList(
   const mainAppTarget = getMainAppTarget(project).getDefaultConfiguration();
   const mainAppName = mainAppTarget.project.getMainAppTarget()?.getDisplayName() ?? name;
   const common: BuildSettings = {
-    ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon",
+    ASSETCATALOG_COMPILER_APPICON_NAME: "iMessage App Icon",
     CLANG_ANALYZER_NONNULL: "YES",
     CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: "YES_AGGRESSIVE",
     CLANG_CXX_LANGUAGE_STANDARD: "gnu++20",
