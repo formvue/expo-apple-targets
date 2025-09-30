@@ -395,7 +395,7 @@ function createIMessageConfigurationList(
   const mainAppTarget = getMainAppTarget(project).getDefaultConfiguration();
   const mainAppName = mainAppTarget.project.getMainAppTarget()?.getDisplayName() ?? name;
   const common: BuildSettings = {
-    ASSETCATALOG_COMPILER_APPICON_NAME: "iMessage App Icon",
+    ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon",
     CLANG_ANALYZER_NONNULL: "YES",
     CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION: "YES_AGGRESSIVE",
     CLANG_CXX_LANGUAGE_STANDARD: "gnu++20",

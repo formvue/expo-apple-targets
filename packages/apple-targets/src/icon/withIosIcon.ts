@@ -39,8 +39,8 @@ export const withIosIcon: ConfigPlugin<{
           ),
         });
       } else if (type === "imessage") {
-        // Ensure the Assets.xcassets/iMessage App Icon.appiconset path exists
-        const iMessageIconPath = "Assets.xcassets/iMessage App Icon.appiconset";
+        // Ensure the Assets.xcassets/AppIcon.appiconset path exists
+        const iMessageIconPath = "Assets.xcassets/AppIcon.appiconset";
         await fs.promises.mkdir(join(namedProjectRoot, iMessageIconPath), {
           recursive: true,
         });
@@ -277,7 +277,7 @@ export async function generateIMessageIconsInternalAsync(
       // Write image buffer to the file system.
       const assetPath = join(
         iosNamedProjectRoot,
-        "Assets.xcassets/iMessage App Icon.appiconset",
+        "Assets.xcassets/AppIcon.appiconset",
         filename
       );
       await fs.promises.writeFile(assetPath, source);
