@@ -39,14 +39,14 @@ export const withIosIcon: ConfigPlugin<{
           ),
         });
       } else if (type === "imessage") {
-        // Ensure the Assets.xcassets/AppIcon.appiconset path exists
-        const iMessageIconPath = "Assets.xcassets/AppIcon.appiconset";
-        await fs.promises.mkdir(join(namedProjectRoot, iMessageIconPath), {
+        // Ensure the Assets.xcassets/iMessage App Icon.appiconset path exists
+        // Note: iMessage extensions require a separate "iMessage App Icon" asset set
+        await fs.promises.mkdir(join(namedProjectRoot, IMESSAGE_IMAGESET_PATH), {
           recursive: true,
         });
 
         // Generate iMessage-specific icons
-        await writeContentsJsonAsync(join(namedProjectRoot, iMessageIconPath), {
+        await writeContentsJsonAsync(join(namedProjectRoot, IMESSAGE_IMAGESET_PATH), {
           images: await generateIMessageIconsInternalAsync(
             iconFilePath,
             projectRoot,
@@ -71,6 +71,7 @@ export const withIosIcon: ConfigPlugin<{
 
 const IMAGE_CACHE_NAME = "widget-icons-";
 const IMAGESET_PATH = "Assets.xcassets/AppIcon.appiconset";
+const IMESSAGE_IMAGESET_PATH = "Assets.xcassets/iMessage App Icon.appiconset";
 
 // Hard-coding seemed like the clearest and safest way to implement the sizes.
 export const ICON_CONTENTS: {
@@ -286,7 +287,7 @@ export async function generateIMessageIconsInternalAsync(
       // Write image buffer to the file system.
       const assetPath = join(
         iosNamedProjectRoot,
-        "Assets.xcassets/AppIcon.appiconset",
+        IMESSAGE_IMAGESET_PATH,
         filename
       );
       await fs.promises.writeFile(assetPath, source);
