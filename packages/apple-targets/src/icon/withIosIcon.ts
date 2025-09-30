@@ -253,7 +253,10 @@ export async function generateIMessageIconsInternalAsync(
     for (const scale of iconSize.scales) {
       const scaledWidth = width * scale;
       const scaledHeight = height * scale;
-      const filename = `icon-${iconSize.size}@${scale}x.png`;
+      // Marketing icons don't use @1x suffix
+      const filename = iconSize.idiom === "ios-marketing" && scale === 1
+        ? `icon-${iconSize.size}.png`
+        : `icon-${iconSize.size}@${scale}x.png`;
 
       // Apple requires the marketing icon (1024x768) to have no transparency
       const isMarketingIcon = iconSize.size === "1024x768" || iconSize.idiom === "ios-marketing";
